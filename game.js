@@ -93,15 +93,43 @@ function getDisplayPhrase() {
 }
 
 function renderPuzzle() {
-  const display = getDisplayPhrase();
-  elements.puzzleDisplay.innerHTML = display
-    .map(({ type, char }) => {
-      if (type === 'space') return '<span class="puzzle-space"></span>';
-      if (type === 'visible') return `<span class="puzzle-box puzzle-punctuation">${char}</span>`;
-      if (type === 'letter') return `<span class="puzzle-box puzzle-filled">${char}</span>`;
-      return '<span class="puzzle-box puzzle-empty"></span>';
-    })
-    .join('');
+  // Split phrase into words, render each word as a group of boxes,
+  // then distribute words across rows so no word is ever split.
+  const words = PUZZLE_PHRASE.split(' ');
+  const MAX_LETTERS_PER_ROW = 20;
+
+  // Build rows of words that fit within the max letter count
+  const rows = [];
+  let currentRow = [];
+  let currentRowLen = 0;
+  words.forEach(word => {
+    if (currentRow.length > 0 && currentRowLen + word.length > MAX_LETTERS_PER_ROW) {
+      rows.push(currentRow);
+      currentRow = [];
+      currentRowLen = 0;
+    }
+    currentRow.push(word);
+    currentRowLen += word.length;
+  });
+  if (currentRow.length > 0) rows.push(currentRow);
+
+  // Render each row as its own div
+  elements.puzzleDisplay.innerHTML = rows.map(rowWords => {
+    const wordChunks = rowWords.map(word => {
+      const boxes = word.split('').map(char => {
+        if (/[^A-Za-z]/.test(char)) {
+          return `<span class="puzzle-box puzzle-punctuation">${char}</span>`;
+        }
+        const upper = char.toUpperCase();
+        if (state.revealedLetters.has(upper)) {
+          return `<span class="puzzle-box puzzle-filled">${upper}</span>`;
+        }
+        return '<span class="puzzle-box puzzle-empty"></span>';
+      }).join('');
+      return `<span class="puzzle-word">${boxes}</span>`;
+    });
+    return `<div class="puzzle-row">${wordChunks.join('<span class="puzzle-space"></span>')}</div>`;
+  }).join('');
 }
 
 function checkWin() {
