@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheel of Fortune</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Landing section -->
+  <section id="landing" class="screen active">
+    <img src="thon-logo.jpeg" alt="THON" class="landing-logo">
+    <div class="landing-content">
+      <h1>Wheel of Fortune</h1>
+      <p class="tagline">Spin the letters, solve the puzzle!</p>
+      <button id="start-btn" class="btn-primary">Play</button>
+      <button id="leaderboard-btn" class="btn-secondary">Leaderboard</button>
+    </div>
+
+  </section>
+
+  <!-- Leaderboard overlay (global) -->
+  <div id="leaderboard-overlay" class="overlay hidden">
+    <div class="overlay-content leaderboard-content">
+      <h2>Leaderboard</h2>
+      <table id="leaderboard-table" class="leaderboard-table">
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Score</th><th>Turns</th></tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
+      <button id="leaderboard-close-btn" class="btn-primary">Back</button>
+    </div>
+  </div>
+
+  <!-- Name entry section -->
+  <section id="name-entry" class="screen">
+    <div class="name-entry-content">
+      <h2>What's your name?</h2>
+      <form id="name-form">
+        <input type="text" id="name-input" placeholder="Enter your name" maxlength="50" autocomplete="off">
+        <button type="submit" class="btn-primary">Let's Play!</button>
+      </form>
+      <p id="name-error" class="error-message"></p>
+    </div>
+  </section>
+
+  <!-- Main game section -->
+  <section id="game" class="screen">
+    <header class="game-header">
+      <h2 id="greeting">Hello, Player!</h2>
+      <div class="game-stats">
+        <span class="score-display">Score: $<span id="score">0</span></span>
+        <span class="turn-display">Turns: <span id="turn-counter">0</span></span>
+        <button id="game-leaderboard-btn" class="btn-secondary btn-small">Leaderboard</button>
+      </div>
+    </header>
+
+    <div class="game-board">
+      <div class="puzzle-area">
+        <div id="puzzle-display" class="puzzle-display"></div>
+        <div class="category-label">Category: <strong>THON Phrase</strong></div>
+      </div>
+
+      <div class="message-area" id="message-area"></div>
+
+      <div class="wheel-section">
+        <div class="wheel-with-legend">
+          <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <div id="wheel" class="wheel"></div>
+          </div>
+          <div class="wheel-legend">
+            <h4>Wheel Key</h4>
+            <div class="legend-item"><span class="legend-swatch faint-green"></span> $50</div>
+            <div class="legend-item"><span class="legend-swatch light-green"></span> $100</div>
+            <div class="legend-item"><span class="legend-swatch medium-green"></span> $150–$300</div>
+            <div class="legend-item"><span class="legend-swatch gold-panel"></span> $750</div>
+            <div class="legend-item"><span class="legend-swatch black-panel"></span> Bankrupt</div>
+            <div class="legend-item"><span class="legend-swatch lose-turn-blue"></span> Lose a Turn</div>
+          </div>
+        </div>
+        <button id="spin-btn" class="btn-primary spin-btn">Spin the Wheel!</button>
+        <p class="wheel-value-display">Current value: <span id="wheel-value">Spin to guess!</span></p>
+      </div>
+
+      <div class="letter-bank">
+        <p class="letter-hint">Spin the wheel, then guess a consonant, or buy a vowel ($250)</p>
+        <div id="letter-grid" class="letter-grid"></div>
+      </div>
+    </div>
+
+    <!-- Win overlay -->
+    <div id="win-overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <h2>Congratulations!</h2>
+        <p id="win-message">You solved the puzzle!</p>
+        <button id="play-again-btn" class="btn-primary">Play Again</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="game.js"></script>
+</body>
+</html>
